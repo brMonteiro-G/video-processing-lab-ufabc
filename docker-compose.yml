@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  video-processing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix  # For GUI applications
+    environment:
+      - DISPLAY=${DISPLAY}  # For GUI applications
+      - PYTHONPATH=/workspace
+      # Avoid Python writing .pyc files
+      - PYTHONDONTWRITEBYTECODE=1
+      # Force Python stdout and stderr streams to be unbuffered
+      - PYTHONUNBUFFERED=1
+      
+    working_dir: /workspace
+    # Keep the container running
+    tty: true
+    # Enable interactive mode
+    stdin_open: true
+    # For GUI applications and webcam access (if needed)
+    devices:
+      - /dev/video0:/dev/video0
+    # For better performance with OpenCV
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+        reservations:
+          cpus: '2'
+          memory: 2G
+    # Add network configuration for potential future web services
+    networks:
+      - video-processing-network
+
+networks:
+  video-processing-network:
+    driver: bridge
