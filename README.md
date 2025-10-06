@@ -2,6 +2,36 @@
 
 This repository contains the environment setup for the UFABC Video Processing Laboratory using Docker.
 
+## Setup Instructions
+
+### macOS Setup (Required for GUI Applications)
+
+1. **Install XQuartz**
+   - Download and install XQuartz from [xquartz.org](https://www.xquartz.org/)
+   - After installation, restart your computer
+
+2. **Configure XQuartz**
+   - Open XQuartz
+   - Go to XQuartz → Preferences → Security
+   - Check "Allow connections from network clients"
+   - Restart XQuartz
+
+3. **Enable X11 Forwarding**
+   - Open terminal and run:
+   ```bash
+   xhost +localhost
+   ```
+
+4. **Set Display Environment Variable**
+   - Add this to your `~/.zshrc` or `~/.bashrc`:
+   ```bash
+   export DISPLAY=host.docker.internal:0
+   ```
+   - Then reload your shell:
+   ```bash
+   source ~/.zshrc  # or source ~/.bashrc
+   ```
+
 ## Using Docker Compose (Recommended)
 
 ### Starting the Environment

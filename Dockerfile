@@ -48,15 +48,6 @@ RUN mkdir -p /root/miniconda3 && \
 # Add conda to path
 ENV PATH="/root/miniconda3/bin:${PATH}"
 
-# Configure conda
-RUN conda config --set auto_activate_base false
-
-# Necessary to accept Anaconda's Terms of Service and solve issue on create local environment
-RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-# Create and activate PV25 environment
-RUN conda create --name PV25 python=3.11 -y
 
 # Install OpenCV from source
 WORKDIR /opencv_build
@@ -74,19 +65,15 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
     make -j$(nproc) && \
     make install
 
-# Set up conda environment and install Python OpenCV packages
-SHELL ["/bin/bash", "-c"]
-RUN source /root/miniconda3/bin/activate PV25 && \
-    pip install opencv-python opencv-contrib-python
+
 
 # Set working directory
 WORKDIR /workspace
 
 # Create entrypoint script
-RUN echo '#!/bin/bash\n\
-source /root/miniconda3/bin/activate PV25\n\
-exec "$@"' > /entrypoint.sh && \
-chmod +x /entrypoint.sh
+# RUN echo '#!/bin/bash\n\
+# source /root/miniconda3/bin/activate PV25\n\
+# exec "$@"' > /entrypoint.sh && \
+# chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/bin/bash"]
+CMD ["tail", "-f", "/dev/null"]

@@ -7,23 +7,21 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/workspace
-      - /tmp/.X11-unix:/tmp/.X11-unix  # For GUI applications
     environment:
-      - DISPLAY=${DISPLAY}  # For GUI applications
-      - PYTHONPATH=/workspace
-      # Avoid Python writing .pyc files
-      - PYTHONDONTWRITEBYTECODE=1
-      # Force Python stdout and stderr streams to be unbuffered
-      - PYTHONUNBUFFERED=1
-      
+        - DISPLAY=host.docker.internal:0
+        - QT_X11_NO_MITSHM=1
+        - PYTHONPATH=/workspace
+        - PYTHONDONTWRITEBYTECODE=1
+        - PYTHONUNBUFFERED=1
+            
     working_dir: /workspace
     # Keep the container running
     tty: true
     # Enable interactive mode
     stdin_open: true
     # For GUI applications and webcam access (if needed)
-    devices:
-      - /dev/video0:/dev/video0
+    #devices:
+   #   - /dev/video0:/dev/video0
     # For better performance with OpenCV
     deploy:
       resources:
