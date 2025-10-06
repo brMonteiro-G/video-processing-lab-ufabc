@@ -51,8 +51,12 @@ ENV PATH="/root/miniconda3/bin:${PATH}"
 # Configure conda
 RUN conda config --set auto_activate_base false
 
+# Necessary to accept Anaconda's Terms of Service and solve issue on create local environment
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
 # Create and activate PV25 environment
-RUN conda create -n PV25 python -y
+RUN conda create --name PV25 python=3.11 -y
 
 # Install OpenCV from source
 WORKDIR /opencv_build

@@ -74,3 +74,10 @@ The Docker Compose configuration includes resource limits to ensure stable perfo
 - Memory: Limited to 4GB, minimum 2GB reserved
 
 You can adjust these values in the `docker-compose.yml` file according to your system's capabilities.
+
+
+## Running Locally 
+
+```
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+```
