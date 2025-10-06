@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # Existing video processing container
   video-processing:
     build:
       context: .
@@ -8,21 +9,14 @@ services:
     volumes:
       - .:/workspace
     environment:
-        - DISPLAY=host.docker.internal:0
-        - QT_X11_NO_MITSHM=1
-        - PYTHONPATH=/workspace
-        - PYTHONDONTWRITEBYTECODE=1
-        - PYTHONUNBUFFERED=1
-            
+      - DISPLAY=host.docker.internal:0
+      - QT_X11_NO_MITSHM=1
+      - PYTHONPATH=/workspace
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
     working_dir: /workspace
-    # Keep the container running
     tty: true
-    # Enable interactive mode
     stdin_open: true
-    # For GUI applications and webcam access (if needed)
-    #devices:
-   #   - /dev/video0:/dev/video0
-    # For better performance with OpenCV
     deploy:
       resources:
         limits:
@@ -31,7 +25,17 @@ services:
         reservations:
           cpus: '2'
           memory: 2G
-    # Add network configuration for potential future web services
+    networks:
+      - video-processing-network
+    depends_on:
+      - rtmp-server  # ensure RTMP server starts first
+
+  # RTMP server for OBS streaming
+  rtmp-server:
+    image: alfg/nginx-rtmp
+    ports:
+      - "1935:1935"  # RTMP port for OBS stream
+      - "8080:80"    # optional web UI to monitor streams
     networks:
       - video-processing-network
 

@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+
+    rtmp-server:
+        image: alfg/nginx-rtmp
+        ports:
+        - "1935:1935"  # RTMP port for OBS stream
+        - "8080:80"    # optional web UI to monitor streams

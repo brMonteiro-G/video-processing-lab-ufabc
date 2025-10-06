@@ -111,3 +111,29 @@ You can adjust these values in the `docker-compose.yml` file according to your s
 ```
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ```
+
+
+
+
+
+### to use video from wbcam 
+
+
+
+Step 1: Set up OBS to stream your webcam
+
+Open OBS Studio on your Mac.
+
+Add your webcam as a video source.
+
+Go to Settings → Stream:
+
+Set Service: Custom...
+
+/stream is the default path configured on nginx of rmtp 
+
+Server: rtmp://localhost:1935/stream (we’ll run a local RTMP server)
+
+Stream Key: mystream
+
+Apply and start streaming.
