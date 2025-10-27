@@ -5,3 +5,4 @@ Makefile
 __pycache__/
 DisplayImage
 ConvertFormatImage
+.DS_Store

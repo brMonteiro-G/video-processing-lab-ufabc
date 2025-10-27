@@ -112,6 +112,18 @@ You can adjust these values in the `docker-compose.yml` file according to your s
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ```
 
+--- Execute on root module 
+
+python code.py 
+
+
+--- execute this command 
+
+xhost + 127.0.0.1
+
+
+
+
 
 
 

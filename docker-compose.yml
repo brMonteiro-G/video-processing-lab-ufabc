@@ -36,6 +36,8 @@ services:
     ports:
       - "1935:1935"  # RTMP port for OBS stream
       - "8080:80"    # optional web UI to monitor streams
+    volumes:
+        - ./hls:/opt/data/hls  
     networks:
       - video-processing-network
 

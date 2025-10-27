@@ -55,16 +55,32 @@ RUN git clone https://github.com/opencv/opencv.git && \
     git clone https://github.com/opencv/opencv_contrib.git
 
 WORKDIR /opencv_build/opencv/build
-RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+
+
+# Before OpenCV build, add these environment variables
+ENV MAKEFLAGS="-j8"
+ENV OPENCV_BUILD_TYPE=RELEASE
+
+# Update the build commands
+RUN cmake \
+    -D CMAKE_BUILD_TYPE=$OPENCV_BUILD_TYPE \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D INSTALL_C_EXAMPLES=ON \
-    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D INSTALL_PYTHON_EXAMPLES=OFF \
     -D OPENCV_GENERATE_PKGCONFIG=ON \
     -D OPENCV_EXTRA_MODULES_PATH=/opencv_build/opencv_contrib/modules \
-    -D BUILD_EXAMPLES=ON .. && \
-    make -j$(nproc) && \
+    -D BUILD_EXAMPLES=OFF \
+    -D BUILD_TESTS=OFF \
+    -D BUILD_PERF_TESTS=OFF \
+    -D BUILD_DOCS=OFF \
+    -D WITH_TBB=ON \
+    -D WITH_OPENMP=ON \
+    -D BUILD_opencv_python3=ON \
+    -D ENABLE_FAST_MATH=ON \
+    -D CMAKE_C_FLAGS="-O3" \
+    -D CMAKE_CXX_FLAGS="-O3" .. && \
+    make -j8 && \
     make install
-
 
 
 # Set working directory
