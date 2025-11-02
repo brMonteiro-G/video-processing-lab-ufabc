@@ -56,44 +56,17 @@ RUN git clone https://github.com/opencv/opencv.git && \
 
 WORKDIR /opencv_build/opencv/build
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Before OpenCV build, add these environment variables
-ENV MAKEFLAGS="-j8"
-ENV OPENCV_BUILD_TYPE=RELEASE
-ENV DEBIAN_FRONTEND=noninteractive
-
-
-# Update the build commands
-RUN cmake \
-    -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    # Disable unnecessary features
-    -D BUILD_EXAMPLES=OFF \
-    -D BUILD_DOCS=OFF \
-    -D BUILD_PERF_TESTS=OFF \
-    -D BUILD_TESTS=OFF \
-    -D BUILD_JAVA=OFF \
-    -D BUILD_opencv_apps=OFF \
-    -D INSTALL_C_EXAMPLES=OFF \
-    -D INSTALL_PYTHON_EXAMPLES=OFF \
-    # Enable only necessary modules
-    -D BUILD_opencv_python3=ON \
-    -D OPENCV_GENERATE_PKGCONFIG=ON \
-    -D OPENCV_EXTRA_MODULES_PATH=/opencv_build/opencv_contrib/modules \
-    # Performance optimizations
-    -D WITH_TBB=ON \
-    -D WITH_OPENMP=ON \
-    -D ENABLE_FAST_MATH=ON \
-    -D CPU_BASELINE=AVX2 \
-    -D CMAKE_C_FLAGS="-O3 -march=native" \
-    -D CMAKE_CXX_FLAGS="-O3 -march=native" \
-    # Disable unnecessary dependencies
-    -D WITH_1394=OFF \
-    -D WITH_GSTREAMER=OFF \
-    -D WITH_IPP=OFF .. && \
-    make -j"$(nproc)" && \
-    make install
-
+# Install Python packages
+RUN pip install --no-cache-dir \
+    opencv-python \
+    opencv-contrib-python \
+    numpy
 
 # Set working directory
 WORKDIR /workspace

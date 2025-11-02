@@ -6,3 +6,6 @@ __pycache__/
 DisplayImage
 ConvertFormatImage
 .DS_Store
+
+conversion/output/*
+venv/
