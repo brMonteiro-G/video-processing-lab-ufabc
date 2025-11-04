@@ -9,3 +9,7 @@ ConvertFormatImage
 
 conversion/output/*
 venv/
+
+background/resources/outputs/*
+background/resources/*.avi
+
